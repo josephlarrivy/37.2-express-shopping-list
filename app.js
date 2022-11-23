@@ -1,33 +1,40 @@
-// GET / items - this should render a list of shopping items.
-// Here is what a response looks like:
+const express = require("express")
+const app = express();
+const itemsRoutes = require("./routes/routes")
 
-// [{“name”: “popsicle”, “price”: 1.45}, {“name”:”cheerios”, “price”: 3.40}]
-
-// POST / items - this route should accept JSON data and add it to the shopping list.
-// Here is what a sample request / response looks like:
-
-// {“name”:”popsicle”, “price”: 1.45 } => {“added”: {“name”: “popsicle”, “price”: 1.45 } }
-
-// GET / items /: name - this route should display a single item’s name and price.
-// Here is what a sample response looks like:
-
-// {“name”: “popsicle”, “price”: 1.45 }
-
-// PATCH / items /: name, this route should modify a single item’s name and / or price.
-// Here is what a sample request / response looks like:
-
-// {“name”:”new popsicle”, “price”: 2.45 } => {“updated”: {“name”: “new popsicle”, “price”: 2.45 } }
-
-// DELETE / items /: name - this route should allow you to delete a specific item from the array.
-
-// Here is what a sample response looks like:
-
-// { message: “Deleted” }
-
-
-
-
-
-
-
+app.use(express.json());
 app.use("/items", itemsRoutes);
+
+/** 404 handler */
+
+app.use(function (req, res, next) {
+  return new ExpressError("Not Found", 404);
+});
+
+/** general error handler */
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+
+  return res.json({
+    error: err.message,
+  });
+});
+
+
+class ExpressError extends Error {
+  constructor(message, status) {
+    super();
+    this.message = message;
+    this.status = status;
+    console.error(this.stack);
+  }
+}
+
+
+
+app.listen(3000, function () {
+  console.log("Server is listening on port 3000");
+});
+
+module.exports = app
