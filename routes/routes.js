@@ -1,34 +1,28 @@
-const Item = require('../item');
 const express = require('express');
+const router = new express.Router();
 
-const router = express.Router();
+const ITEMS = require('../fakeDb');
+
 
 /** GET / => [item, ...] */
 
 router.get('/', (req, res, next) => {
-  res.send('test')
-  return next
+  return res.send('test')
+  // return next
 });
 
+router.get('/items', (req, res, next) => {
+  return res.json({items: ITEMS})
+  // return next
+});
 
-// router.get('', (req, res, next) => {
-//   try {
-//     return res.json({ items: Item.findAll() });
-//   } catch(err){
-//     return next(err)
-//   }
-// });
+router.post('/postitems', (req, res, next) => {
+  let addItem = new (req.body.name, reg.body.price)
+  res.json({item: addItem})
+  return res.json({ items: ITEMS })
+  // return next
+});
 
-// /** POST / {name, price} => new-item */
-
-// router.post('', (req, res, next) => {
-//   try {
-//     let newItem = new Item(req.body.name, req.body.price);
-//     return res.json({item: newItem});
-//   } catch (err) {
-//     return next(err)
-//   }
-// });
 
 // /** GET /[name] => item */
 
