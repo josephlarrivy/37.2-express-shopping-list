@@ -1,13 +1,15 @@
 const express = require('express');
 const router = new express.Router();
+// const Item = require('../item');
 
-const ITEMS = require('../fakeDb');
+let ITEMS = require('../fakeDb');
+// ITEMS = []
 
+// ###################
 
-/** GET / => [item, ...] */
 
 router.get('/', (req, res, next) => {
-  return res.send('test')
+  return res.json('test - home')
   // return next
 });
 
@@ -16,45 +18,31 @@ router.get('/items', (req, res, next) => {
   // return next
 });
 
-router.post('/postitems', (req, res, next) => {
-  let addItem = new (req.body.name, reg.body.price)
-  res.json({item: addItem})
-  return res.json({ items: ITEMS })
-  // return next
+router.post('/postitems/:name/:price', (req, res, next) => {
+  paramters = req.params
+  let item_name = req.params.name;
+  let item_price = req.params.price
+  ITEMS.push({'item_name': item_name, 'item_price': item_price})
+
+  return res.json(ITEMS)
 });
 
 
-// /** GET /[name] => item */
+router.get('/find/:name', (req, res, next) => {
+  const find = ITEMS.find(item => item.item_name == req.params.name)
+  return res.send(find)
+});
 
-// router.get('/:name', (req, res, next) => {
-//   try {
-//     let foundItem = Item.find(req.params.name);
-//     return res.json({item:foundItem});
-//   } catch(err){
-//     return next(err)
-//   }
-// });
+router.patch('/change/:name/:change', (req, res, next) => {
+  const find = ITEMS.find(item => item.item_name == req.params.name)
+  const update = find.update({ 'item_name': req.params.change, 'item_price': find.item_price })
 
-// /** PATCH /[name] => item */
+});
 
-// router.patch('/:name', (req, res, next) => {
-//   try {
-//     let foundItem = Item.update(req.params.name, req.body);
-//     return res.json({ item: foundItem });
-//   } catch (err) {
-//     return next(err)
-//   }
-// });
-
-// /** DELETE /[name] => "Removed" */
-
-// router.delete('/:name', (req, res, next) => {
-//   try {
-//     Item.remove(req.params.name);
-//     return res.json({message:'Deleted'});
-//   } catch (err) {
-//     return next(err)
-//   }
-// });
+router.delete('/delete/:name', (req, res, next) => {
+  const find = ITEMS.find(item => item.item_name == req.params.name)
+  find.delete()
+  return res.json(find)
+});
 
 module.exports = router;

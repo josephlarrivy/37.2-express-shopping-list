@@ -8,10 +8,6 @@ app.use(express.json());
 
 /** 404 handler */
 
-
-
-
-
 // app.use(function (req, res, next) {
 //   return new ExpressError("Not Found", 404);
 // });
@@ -26,7 +22,6 @@ app.use(express.json());
 //   });
 // });
 
-
 // class ExpressError extends Error {
 //   constructor(message, status) {
 //     super();
@@ -36,12 +31,8 @@ app.use(express.json());
 //   }
 // }
 
-
-
-
-
-app.listen(3000, function () {
-  console.log("Server is listening on port 3000");
-});
+// app.listen(3000, function () {
+//   console.log("Server is listening on port 3000");
+// });
 
 module.exports = app

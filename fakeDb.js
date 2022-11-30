@@ -1,3 +1,3 @@
-global.items = [{item:1}]
+global.items = []
 
 module.exports = items
